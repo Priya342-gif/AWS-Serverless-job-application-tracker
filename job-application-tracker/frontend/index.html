@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudTrack | Job Application Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>CloudTrack</h1>
+        <p>Your job search, organized.</p>
+    </header>
+
+    <main>
+        <section class="stats">
+            <div class="card">
+                <h3>Total Applications</h3>
+                <p id="total">0</p>
+            </div>
+            <div class="card">
+                <h3>Interviews</h3>
+                <p id="interviews">0</p>
+            </div>
+            <div class="card">
+                <h3>Offers</h3>
+                <p id="offers">0</p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Add Job Application</h2>
+            <form id="jobForm">
+                <input id="company" placeholder="Company name" required>
+                <input id="role" placeholder="Job role" required>
+                <input id="date" type="date" required>
+
+                <select id="status">
+                    <option>Applied</option>
+                    <option>Assessment</option>
+                    <option>Interview</option>
+                    <option>Rejected</option>
+                    <option>Selected</option>
+                </select>
+
+                <button type="submit">Add Application</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Your Applications</h2>
+            <div id="jobList">No applications added yet.</div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

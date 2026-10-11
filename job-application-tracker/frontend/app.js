@@ -17,7 +17,7 @@ const VALID_STATUSES = [
 
 let jobs = [];
 
-// Load applications from AWS DynamoDB through API Gateway
+// Load applications from AWS
 async function loadJobs() {
     try {
         jobList.textContent = "Loading applications...";
@@ -38,14 +38,15 @@ async function loadJobs() {
 
         jobs = data;
         renderJobs();
+
     } catch (error) {
         console.error("Load error:", error);
         jobList.textContent =
-            "Unable to load applications. Please try again.";
+            "Unable to load applications. Please check your API.";
     }
 }
 
-// Update dashboard counters and render applications
+// Render dashboard and application cards
 function renderJobs() {
     document.getElementById("total").textContent = jobs.length;
 
@@ -70,18 +71,17 @@ function renderJobs() {
         heading.textContent = `${job.company} — ${job.role}`;
 
         const details = document.createElement("p");
-        details.textContent = `Date: ${job.date} | Status: ${job.status}`;
+        details.textContent =
+            `Date: ${job.date} | Status: ${job.status}`;
 
         const editButton = document.createElement("button");
         editButton.textContent = "Edit Status";
+        editButton.addEventListener("click", () => editStatus(job));
 
         const deleteButton = document.createElement("button");
         deleteButton.textContent = "Delete";
         deleteButton.style.marginLeft = "8px";
         deleteButton.style.background = "#b91c1c";
-
-        editButton.addEventListener("click", () => editStatus(job));
-
         deleteButton.addEventListener("click", () => deleteJob(job));
 
         item.append(heading, details, editButton, deleteButton);
@@ -89,7 +89,7 @@ function renderJobs() {
     });
 }
 
-// Add a new application to AWS
+// Add application
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -126,16 +126,17 @@ form.addEventListener("submit", async function (event) {
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.error || "Failed to save application.");
+            throw new Error(result.error || "Failed to add application.");
         }
 
         form.reset();
         await loadJobs();
-
         alert("Application added successfully!");
+
     } catch (error) {
         console.error("Add error:", error);
         alert("Could not add application: " + error.message);
+
     } finally {
         submitButton.disabled = false;
     }
@@ -153,59 +154,63 @@ async function editStatus(job) {
     const status = newStatus.trim();
 
     if (!VALID_STATUSES.includes(status)) {
-        alert("Invalid status. Choose one of the listed statuses.");
+        alert("Invalid status. Choose a status from the list.");
         return;
     }
 
     try {
-        const response = await fetch(API_URL, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                userId: USER_ID,
-                applicationId: job.applicationId,
-                status: status
-            })
-        });
+        const response = await fetch(
+            `${API_URL}?userId=${encodeURIComponent(USER_ID)}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userId: USER_ID,
+                    applicationId: job.applicationId,
+                    status: status
+                })
+            }
+        );
 
         const result = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.error || "Failed to update status.");
+            throw new Error(result.error || "Failed to update application.");
         }
 
         await loadJobs();
-        alert("Application status updated!");
+        alert("Application status updated successfully!");
+
     } catch (error) {
         console.error("Update error:", error);
-        alert(
-            "Could not update application. Check API Gateway CORS settings. " +
-            error.message
-        );
+        alert("Could not update application: " + error.message);
     }
 }
 
-// Delete an application from AWS
+// Delete application
 async function deleteJob(job) {
     const confirmed = confirm(
-        `Are you sure you want to delete ${job.company} — ${job.role}?`
+        `Delete ${job.company} — ${job.role}?`
     );
 
     if (!confirmed) return;
 
     try {
-        const response = await fetch(API_URL, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                userId: USER_ID,
-                applicationId: job.applicationId
-            })
-        });
+        const response = await fetch(
+            `${API_URL}?userId=${encodeURIComponent(USER_ID)}`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    userId: USER_ID,
+                    applicationId: job.applicationId
+                })
+            }
+        );
 
         const result = await response.json();
 
@@ -215,14 +220,12 @@ async function deleteJob(job) {
 
         await loadJobs();
         alert("Application deleted successfully!");
+
     } catch (error) {
         console.error("Delete error:", error);
-        alert(
-            "Could not delete application. Check API Gateway CORS settings. " +
-            error.message
-        );
+        alert("Could not delete application: " + error.message);
     }
 }
 
-// Load saved applications when the page opens
+// Load saved records on page open
 loadJobs();

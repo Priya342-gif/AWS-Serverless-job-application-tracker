@@ -7,26 +7,38 @@ CloudTrack helps users manage their job search by adding applications, tracking 
 ## 📸 Project Demo
 
 ### Application Dashboard
+<img width="1352" height="771" alt="image" src="https://github.com/user-attachments/assets/b3527179-9d5b-4f26-94fe-76ef874a8956" />
 
-![CloudTrack Dashboard](screenshots/dashboard.png)
+
 
 *Dashboard displaying job applications, interview counts, offers, and application status.*
 
 ### AWS Lambda Execution
 
-![Lambda Test](screenshots/lambda-test.png)
+<img width="755" height="757" alt="image" src="https://github.com/user-attachments/assets/b96f084a-1826-42cb-a2ed-576b6e74a33b" />
+
+<img width="706" height="680" alt="image" src="https://github.com/user-attachments/assets/39fdd272-c49e-4014-abbc-e8e77040d46a" />
+
+
+
 
 *Successful Lambda test demonstrating backend execution.*
 
 ### API Gateway
 
-![API Gateway](screenshots/api-gateway.png)
+<img width="1501" height="716" alt="image" src="https://github.com/user-attachments/assets/dd7a37aa-4dcc-4244-a8a8-5eeec75e85bc" />
+
+
 
 *REST API configuration connecting HTTP requests to the Lambda function.*
 
 ### DynamoDB Database
+<img width="1366" height="731" alt="image" src="https://github.com/user-attachments/assets/04ea57d7-5855-4591-92a6-f3eebeb9eb5f" />
 
-![DynamoDB Items](screenshots/dynamodb-items.png)
+<img width="1397" height="606" alt="image" src="https://github.com/user-attachments/assets/aa73c306-b27d-4543-99c8-be3a4de18e33" />
+
+
+
 
 *Job application records stored in Amazon DynamoDB.*
 
